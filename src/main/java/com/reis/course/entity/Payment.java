@@ -2,6 +2,9 @@ package com.reis.course.entity;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +24,7 @@ public class Payment implements Serializable {
 	private Long id;
 	private Instant moment;
 
+	@JsonIgnore
 	@OneToOne
 	@MapsId
 	private Order order;
@@ -56,6 +60,23 @@ public class Payment implements Serializable {
 
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Payment other = (Payment) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }
